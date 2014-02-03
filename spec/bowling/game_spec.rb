@@ -18,6 +18,10 @@ describe Bowling::Game, "#score" do
   subject{ described_class.new }
 
   context "only miss game" do
+    before do
+      20.times { subject.roll(0) }
+    end
+
     it "scores 0 points" do
       expect(subject.score).to eq(0)
     end
