@@ -12,7 +12,7 @@ module Bowling
     end
 
     def score
-      0
+      @turns_results.reduce(:+)
     end
   end
 end
