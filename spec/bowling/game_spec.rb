@@ -26,14 +26,4 @@ describe Bowling::Game, "#score" do
       expect(subject.score).to eq(0)
     end
   end
-
-  context "perfect game" do
-    before do
-      12.times { subject.roll(10) }
-    end
-
-    it "scores 300 points" do
-      expect(subject.score).to eq(300)
-    end
-  end
 end
