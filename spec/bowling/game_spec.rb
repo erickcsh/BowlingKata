@@ -26,4 +26,17 @@ describe Bowling::Game, "#score" do
       expect(subject.score).to eq(0)
     end
   end
+
+  context "knocks 5 pins and a miss per frame" do
+    before do
+      10.times do
+        subject.roll(5)
+        subject.roll(0)
+      end
+    end
+
+    it "scores 50 points" do
+      expect(subject.score).to eq(50)
+    end
+  end
 end
