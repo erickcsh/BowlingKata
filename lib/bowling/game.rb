@@ -10,5 +10,9 @@ module Bowling
     def roll(pins)
       @turns_results << pins
     end
+
+    def score
+      0
+    end
   end
 end
