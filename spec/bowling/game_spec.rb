@@ -9,6 +9,6 @@ describe Bowling::Game, "#roll" do
   end
 
   it "adds number of knocked pins to the turn result" do
-    expect(turns_results.size).to == 0
+    expect(subject.turns_results.size).to eq(0)
   end
 end
