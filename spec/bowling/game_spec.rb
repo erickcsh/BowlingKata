@@ -12,3 +12,14 @@ describe Bowling::Game, "#roll" do
     expect(subject.turns_results.size).to eq(0)
   end
 end
+
+describe Bowling::Game, "#score" do
+
+  subject{ described_class.new }
+
+  context "only miss game" do
+    it "scores 0 points" do
+      expect(subject.score).to eq(0)
+    end
+  end
+end
