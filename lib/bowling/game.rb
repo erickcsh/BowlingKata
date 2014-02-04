@@ -18,6 +18,8 @@ module Bowling
       while valid_frame?(count) do
         frame = frame_tries(count)
         score += frame_score(frame) + bonus_score(frame, count)
+        print strike?(frame), count, @turns_results.size, "\n"
+        break if (strike?(frame)? count + 1 : count) == (strike?(frame)? @turns_results.size - 2 : @turns_results.size)
         count += strike?(frame) ? 1 : 2
       end
       score
