@@ -16,28 +16,46 @@ module Bowling
     def score
       count = score = 0
       while valid_frame?(count) do
-        first_try, second_try = frame_tries(count)
-        score += first_try + (second_try || 0)
-        score += @turns_results[count + 2] + @turns_results[count + 3] if first_try == 10
-        score += spare_result(count) if spare?(first_try, second_try)
-        count += first_try == 10 ? 1 : 2
+        frame = frame_tries(count)
+        score += frame_score(frame) + bonus_score(frame, count)
+        count += strike?(frame) ? 1 : 2
       end
       score
     end
 
     private
+    def bonus_score(frame, count)
+      case
+      when strike?(frame) then strike_bonus(count)
+      when spare?(frame) then spare_bonus(count)
+      else 0
+      end
+    end
+
+    def frame_score(frame)
+      frame[0] + (frame[1] || 0)
+    end
+
     def frame_tries(count)
       first_try = @turns_results[count]
       second_try = first_try == 10 ? nil : @turns_results[count + 1]
       [first_try, second_try]
     end
 
-    def spare?(first_try, second_try)
-      first_try + (second_try || 0) == 10
+    def spare?(frame)
+      frame[1] && frame_score(frame) == 10
     end
 
-    def spare_result(count)
+    def strike?(frame)
+      frame[0] == 10
+    end
+
+    def spare_bonus(count)
       @turns_results[count + 2]
+    end
+
+    def strike_bonus(count)
+      @turns_results[count + 1] + @turns_results[count + 2]
     end
 
     def valid_frame?(count)
