@@ -15,7 +15,7 @@ module Bowling
 
     def score
       count = score = 0
-      while count < [@turns_results.size, LAST_FRAME].min do
+      while valid_frame?(count) do
         first_try, second_try = frame_tries(count)
         score += first_try + second_try
         score += spare_result(count) if spare?(first_try, second_try)
@@ -37,5 +37,8 @@ module Bowling
       @turns_results[count + 2]
     end
 
+    def valid_frame?(count)
+      count < [@turns_results.size, LAST_FRAME].min
+    end
   end
 end
