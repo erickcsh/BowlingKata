@@ -17,21 +17,19 @@ describe Bowling::Game, "#score" do
 
   subject{ described_class.new }
 
-  shared_examples "calculate score" do |points|
-    it "scores #{points} points" do
-      expect(subject.score).to eq(points)
-    end
+  shared_examples "a game score" do |points|
+    its(:score) { should == points }
   end
 
-  context "only miss game" do
+  context "when it is an only miss game" do
     before do
       20.times { subject.roll(0) }
     end
 
-    it_behaves_like "calculate score", 0
+    it_behaves_like "a game score", 0
   end
 
-  context "knocks 5 pins and a miss per frame" do
+  context "when it knocks 5 pins and a miss per frame" do
     before do
       10.times do
         subject.roll(5)
@@ -39,61 +37,61 @@ describe Bowling::Game, "#score" do
       end
     end
 
-    it_behaves_like "calculate score", 50
+    it_behaves_like "a game score", 50
   end
 
-  context "knocks a spare, 5 in next turn and just misses" do
+  context "when it knocks a spare, 5 in next turn and just misses" do
     before do
       3.times { subject.roll(5) }
       17.times { subject.roll(0) }
     end
 
-    it_behaves_like "calculate score", 20
+    it_behaves_like "a game score", 20
   end
 
-  context "knocks misses, a spare in the last frame, and a 5 next" do
+  context "when it knocks misses, a spare in the last frame, and a 5 next" do
     before do
       18.times { subject.roll(0) }
       3.times { subject.roll(5) }
     end
 
-    it_behaves_like "calculate score", 15
+    it_behaves_like "a game score", 15
   end
 
-  context "knocks a strike then two 4's and just misses" do
+  context "when knocks a strike then two 4's and just misses" do
     before do
       subject.roll(10)
       2.times { subject.roll(4) }
       16.times { subject.roll(0) }
     end
 
-    it_behaves_like "calculate score", 26
+    it_behaves_like "a game score", 26
   end
 
-  context "knocks misses, a strike in last frame and two 4's" do
+  context "when knocks misses, a strike in last frame and two 4's" do
     before do
       18.times { subject.roll(0) }
       subject.roll(10)
       2.times { subject.roll(4) }
     end
 
-    it_behaves_like "calculate score", 18
+    it_behaves_like "a game score", 18
   end
 
-  context "knocks misses, a strike in last frame and two 10's" do
+  context "when knocks misses, a strike in last frame and two 10's" do
     before do
       18.times { subject.roll(0) }
       3.times { subject.roll(10) }
     end
 
-    it_behaves_like "calculate score", 30
+    it_behaves_like "a game score", 30
   end
 
-  context "perfect game" do
+  context "when it is a perfect game" do
     before do
       12.times { subject.roll(10) }
     end
 
-    it_behaves_like "calculate score", 300
+    it_behaves_like "a game score", 300
   end
 end
