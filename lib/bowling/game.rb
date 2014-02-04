@@ -1,6 +1,8 @@
 module Bowling
   class Game
 
+    LAST_FRAME = 20
+
     attr_reader :turns_results
 
     def initialize
@@ -13,7 +15,7 @@ module Bowling
 
     def score
       count = score = 0
-      while count < @turns_results.size do
+      while count < [@turns_results.size, LAST_FRAME].min do
         first_try, second_try = frame_tries(count)
         score += first_try + second_try
         score += spare_result(count) if spare?(first_try, second_try)
@@ -34,5 +36,6 @@ module Bowling
     def spare_result(count)
       @turns_results[count + 2]
     end
+
   end
 end
