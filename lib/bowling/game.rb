@@ -12,18 +12,27 @@ module Bowling
     end
 
     def score
-      score = 0
-      count = 0
+      count = score = 0
       while count < @turns_results.size do
-        first_try = @turns_results[count]
-        second_try = @turns_results[count + 1]
+        first_try, second_try = frame_tries(count)
         score += first_try + second_try
-        if(first_try + second_try == 10)
-          score += @turns_results[count + 2]
-        end
+        score += spare_result(count) if spare?(first_try, second_try)
         count += 2
       end
       score
+    end
+
+    private
+    def frame_tries(count)
+      [@turns_results[count], @turns_results[count + 1]]
+    end
+
+    def spare?(first_try, second_try)
+      first_try + second_try == 10
+    end
+
+    def spare_result(count)
+      @turns_results[count + 2]
     end
   end
 end
