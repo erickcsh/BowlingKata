@@ -17,14 +17,18 @@ describe Bowling::Game, "#score" do
 
   subject{ described_class.new }
 
+  shared_examples "calculate score" do |points|
+    it "scores #{points} points" do
+      expect(subject.score).to eq(points)
+    end
+  end
+
   context "only miss game" do
     before do
       20.times { subject.roll(0) }
     end
 
-    it "scores 0 points" do
-      expect(subject.score).to eq(0)
-    end
+    it_behaves_like "calculate score", 0
   end
 
   context "knocks 5 pins and a miss per frame" do
@@ -35,9 +39,7 @@ describe Bowling::Game, "#score" do
       end
     end
 
-    it "scores 50 points" do
-      expect(subject.score).to eq(50)
-    end
+    it_behaves_like "calculate score", 50
   end
 
   context "knocks a spare, 5 in next turn and just misses" do
@@ -46,9 +48,7 @@ describe Bowling::Game, "#score" do
       17.times { subject.roll(0) }
     end
 
-    it "scores 20 points" do
-      expect(subject.score).to eq(20)
-    end
+    it_behaves_like "calculate score", 20
   end
 
   context "knocks misses, a spare in the last frame, and a 5 next" do
@@ -57,9 +57,7 @@ describe Bowling::Game, "#score" do
       3.times { subject.roll(5) }
     end
 
-    it "scores 15 points" do
-      expect(subject.score).to eq(15)
-    end
+    it_behaves_like "calculate score", 15
   end
 
   context "knocks a strike then two 4's and just misses" do
@@ -69,9 +67,7 @@ describe Bowling::Game, "#score" do
       16.times { subject.roll(0) }
     end
 
-    it "scores 26 points" do
-      expect(subject.score).to eq(26)
-    end
+    it_behaves_like "calculate score", 26
   end
 
   context "knocks misses, a strike in last frame and two 4's" do
@@ -81,9 +77,7 @@ describe Bowling::Game, "#score" do
       2.times { subject.roll(4) }
     end
 
-    it "scores 18 points" do
-      expect(subject.score).to eq(18)
-    end
+    it_behaves_like "calculate score", 18
   end
 
   context "knocks misses, a strike in last frame and two 10's" do
@@ -92,8 +86,14 @@ describe Bowling::Game, "#score" do
       3.times { subject.roll(10) }
     end
 
-    it "scores 30 points" do
-      expect(subject.score).to eq(30)
+    it_behaves_like "calculate score", 30
+  end
+
+  context "perfect game" do
+    before do
+      12.times { subject.roll(10) }
     end
+
+    it_behaves_like "calculate score", 300
   end
 end
