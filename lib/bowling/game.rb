@@ -1,8 +1,6 @@
 module Bowling
   class Game
 
-    LAST_FRAME = 20
-
     attr_reader :turns_results
 
     def initialize
@@ -15,17 +13,31 @@ module Bowling
 
     def score
       count = score = 0
-      while valid_frame?(count) do
+      while count < @turns_results.size do
         frame = frame_tries(count)
         score += frame_score(frame) + bonus_score(frame, count)
-        print strike?(frame), count, @turns_results.size, "\n"
-        break if (strike?(frame)? count + 1 : count) == (strike?(frame)? @turns_results.size - 2 : @turns_results.size)
-        count += strike?(frame) ? 1 : 2
+        count += count_jump(frame, count)
       end
       score
     end
 
     private
+    def count_jump(frame, count)
+      case
+      when strike?(frame) then strike_jump(count)
+      when spare?(frame) then spare_jump(count)
+      else 2
+      end
+    end
+
+    def strike_jump(count)
+      count + 1 == @turns_results.size - 2 ? 3 : 1
+    end
+
+    def spare_jump(count)
+      count + 2 == @turns_results.size - 1 ? 3 : 2
+    end
+
     def bonus_score(frame, count)
       case
       when strike?(frame) then strike_bonus(count)
@@ -58,10 +70,6 @@ module Bowling
 
     def strike_bonus(count)
       @turns_results[count + 1] + @turns_results[count + 2]
-    end
-
-    def valid_frame?(count)
-      count < [@turns_results.size, LAST_FRAME].min
     end
   end
 end
