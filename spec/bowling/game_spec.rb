@@ -57,8 +57,8 @@ describe Bowling::Game, "#score" do
       3.times { subject.roll(5) }
     end
 
-    it "scores 20 points" do
-      expect(subject.score).to eq(20)
+    it "scores 15 points" do
+      expect(subject.score).to eq(15)
     end
   end
 end
