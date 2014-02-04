@@ -51,7 +51,7 @@ describe Bowling::Game, "#score" do
     end
   end
 
-  context "knocks a spare in the last frame, and a 5 next" do
+  context "knocks misses, a spare in the last frame, and a 5 next" do
     before do
       18.times { subject.roll(0) }
       3.times { subject.roll(5) }
@@ -59,6 +59,18 @@ describe Bowling::Game, "#score" do
 
     it "scores 15 points" do
       expect(subject.score).to eq(15)
+    end
+  end
+
+  context "knocks a strike then two 4's and just misses" do
+    before do
+      subject.roll(10)
+      2.times { subject.roll(4) }
+      16.times { subject.roll(0) }
+    end
+
+    it "scores 26 points" do
+      expect(subject.score).to eq(26)
     end
   end
 end
