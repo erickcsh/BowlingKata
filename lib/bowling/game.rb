@@ -8,6 +8,7 @@ module Bowling
     SPARE_EXTRA_BALLS = 1
     NO_BONUS = 0
     GAME_END = 3
+    NO_PLAY = 0
 
     attr_reader :turns_results
 
@@ -63,7 +64,7 @@ module Bowling
     end
 
     def frame_score(frame)
-      frame[0] + (frame[1] || 0)
+      frame[0] + (frame[1] || NO_PLAY)
     end
 
     def frame_tries(frame_first_try)
